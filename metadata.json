@@ -1,0 +1,6 @@
+{
+  "name": "Maths with Indika",
+  "description": "An interactive digital educational portal for Combined Mathematics revision by Indika Rathninda.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

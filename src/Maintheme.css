@@ -1,0 +1,402 @@
+/* =======================================================================
+   MAINTHEME.CSS - ADVANCED EDUCATIONAL DESIGN FRAMEWORK
+   White & Orange-Yellow Default | Pop-Art Login | Obsidian & Gold Dashboard
+   ======================================================================= */
+
+/* --- Color Constants --- */
+:root {
+    --color-orange-yellow: #FF9F1C;
+    --color-orange-yellow-glow: rgba(255, 159, 28, 0.25);
+    --color-orange-yellow-bright: #ffb703;
+    --color-gold: #f39c12;
+    --color-accent-dark: #d48c00;
+}
+
+/* --- Phase 1: academic loading page - White and Orangey Yellow --- */
+.phase-loading-theme {
+    background-color: #FBFAF8 !important;
+    color: #1a1a1a !important;
+}
+
+.phase-loading-theme .premium-radial-bg {
+    background: 
+        radial-gradient(circle at 50% 50%, rgba(255, 159, 28, 0.12) 0%, transparent 80%),
+        repeating-conic-gradient(from 0deg, rgba(255, 159, 28, 0.03) 0deg 15deg, transparent 15deg 30deg);
+}
+
+.phase-loading-theme .loader-accent-bar {
+    background: linear-gradient(90deg, #ff9f1c, #ffb703) !important;
+    box-shadow: 0 0 15px rgba(255, 159, 28, 0.7);
+}
+
+.phase-loading-theme .loader-box-border {
+    border-color: rgba(255, 159, 28, 0.2) !important;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(255, 159, 28, 0.05);
+}
+
+.pulse-yellow-orange {
+    color: var(--color-orange-yellow) !important;
+    font-weight: 700;
+}
+
+/* --- Phase 2: Login Screen - COLOURFUL COMIC AS IN ORIGINAL --- */
+.phase-login-theme {
+    background-color: #0b0b0f !important;
+}
+
+/* Restore the left comic cartoon panel styling */
+.comic-left-container {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-right: 6px solid #000000 !important;
+    position: relative;
+    box-shadow: 10px 0 0 rgba(0,0,0,0.15);
+}
+
+.comic-halftone-backdrop {
+    background-image: radial-gradient(#000000 18%, transparent 18%) !important;
+    background-size: 13px 13px !important;
+    opacity: 0.04 !important;
+}
+
+.comic-header-badge {
+    background-color: #e65100 !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    border: 3px solid #000000 !important;
+    box-shadow: 4px 4px 0px #000000 !important;
+    transform: rotate(-2deg);
+    display: inline-block;
+}
+
+/* Dynamic bouncy comic alerts */
+.comic-status-alert-success {
+    background-color: #ffeb3b !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    box-shadow: 4px 4px 0px #000000 !important;
+    font-weight: 800 !important;
+}
+
+.comic-status-alert-error {
+    background-color: #f44336 !important;
+    color: #ffffff !important;
+    border: 3px solid #000000 !important;
+    box-shadow: 4px 4px 0px #000000 !important;
+    font-weight: 800 !important;
+}
+
+/* Inputs and Buttons styling */
+.comic-input-bold {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+    border: 3px solid #000000 !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15) !important;
+}
+.comic-input-bold:focus {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #000000 !important;
+    outline: none !important;
+}
+
+.comic-btn-bold {
+    background-color: #e65100 !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    font-size: 1.125rem !important;
+    border: 3px solid #000000 !important;
+    border-radius: 12px !important;
+    box-shadow: 4px 4px 0px #000000 !important;
+    transition: all 0.15s ease-in-out !important;
+}
+.comic-btn-bold:hover {
+    background-color: #ff6d00 !important;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000000 !important;
+}
+.comic-btn-bold:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #000000 !important;
+}
+
+/* --- Phase 3: Player / Workspace Dashboard - Dark Theme with Orange-Yellow --- */
+.phase-dashboard-theme {
+    background-color: #0a0a0f !important;
+    color: #f1f5f9 !important;
+}
+
+.phase-dashboard-theme header {
+    border-bottom: 1px solid rgba(255, 159, 28, 0.15) !important;
+}
+
+.gold-accent-text {
+    color: var(--color-orange-yellow) !important;
+    text-shadow: 0 0 10px rgba(255, 159, 28, 0.3);
+}
+
+.text-gold-light {
+    color: #ffe082 !important;
+}
+
+/* --- Liquid Glassism Refraction Styles (for Dashboard Cards & Player) --- */
+.liquid-glass-wrapper {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+    padding: 12px !important;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(16px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(120%) !important;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liquid-glass-wrapper:hover {
+    border-color: rgba(255, 159, 28, 0.3) !important;
+    box-shadow: 
+        0 30px 60px rgba(255, 159, 28, 0.1),
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-2px);
+}
+
+/* Holographic specular refraction layer inside the glass player */
+.liquid-glass-refraction {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        125deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.05) 40%,
+        rgba(255, 159, 28, 0.05) 50%,
+        rgba(255, 255, 255, 0.05) 60%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    z-index: 5;
+    pointer-events: none;
+    background-size: 200% 200%;
+    animation: shine-sweep 8s ease infinite;
+}
+
+@keyframes shine-sweep {
+    0% { background-position: -100% -100%; }
+    100% { background-position: 200% 200%; }
+}
+
+/* Glass-card design */
+.glass-panel-dark {
+    position: relative;
+    background: rgba(18, 18, 24, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 16px !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.glass-panel-dark:hover {
+    border-color: rgba(255, 159, 28, 0.25) !important;
+    background: rgba(18, 18, 24, 0.75) !important;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.4),
+        0 0 15px rgba(255, 159, 28, 0.05) !important;
+}
+
+/* Glass Pill Badge */
+.glass-pill-amber {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px !important;
+    border: 1px solid rgba(255, 159, 28, 0.3) !important;
+    background: rgba(255, 159, 28, 0.08) !important;
+    color: var(--color-orange-yellow) !important;
+    padding: 6px 14px !important;
+    backdrop-filter: blur(4px) !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase;
+}
+
+/* Custom golden range sliders */
+input[type="range"].amber-slider::-webkit-slider-runnable-track {
+    background: rgba(255, 255, 255, 0.15) !important;
+    height: 4px !important;
+    border-radius: 2px !important;
+}
+
+input[type="range"].amber-slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background-color: var(--color-orange-yellow) !important;
+    border: none !important;
+    height: 12px !important;
+    width: 12px !important;
+    border-radius: 50% !important;
+    margin-top: -4px !important;
+    box-shadow: 0 0 8px var(--color-orange-yellow) !important;
+    cursor: pointer !important;
+}
+
+/* Ambient glow nodes */
+.ambient-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+    animation: rotate-glow 20s linear infinite;
+}
+
+.glow-orange {
+    top: -10%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: var(--color-orange-yellow);
+}
+
+.glow-yellow {
+    bottom: -15%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: var(--color-gold);
+}
+
+@keyframes rotate-glow {
+    0% { transform: rotate(0deg) translate(0, 0); }
+    50% { transform: rotate(180deg) translate(30px, -20px); }
+    100% { transform: rotate(360deg) translate(0, 0); }
+}
+
+/* Floating aesthetic orbs on hover card */
+.card-orb-amber {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 159, 28, 0.2) 0%, transparent 70%);
+    width: 150px;
+    height: 150px;
+    top: -50px;
+    right: -50px;
+    pointer-events: none;
+    z-index: 1;
+    transition: transform 0.5s ease;
+}
+
+.glass-panel-dark:hover .card-orb-amber {
+    transform: scale(1.3) translate(-10px, 10px);
+}
+
+/* =======================================================================
+   HIGH-POLISH WORKSPACE LIGHT THEME STYLING OVERRIDES
+   ======================================================================= */
+.light-theme {
+    background-color: #fbfaf8 !important;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 0) !important;
+    background-size: 24px 24px !important;
+    color: #1e293b !important;
+}
+
+.light-theme .glass-panel-dark {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 2px 4px -1px rgba(0, 0, 0, 0.01),
+        0 20px 25px -5px rgba(0, 0, 0, 0.03) !important;
+    color: #1e293b !important;
+}
+
+.light-theme .glass-panel-dark:hover {
+    border-color: rgba(255, 159, 28, 0.4) !important;
+    background: #ffffff !important;
+    box-shadow: 
+        0 20px 25px -5px rgba(255, 159, 28, 0.03),
+        0 10px 10px -5px rgba(0, 0, 0, 0.02) !important;
+}
+
+.light-theme .text-slate-400,
+.light-theme .text-slate-500,
+.light-theme .text-slate-300 {
+    color: #475569 !important;
+}
+
+.light-theme .text-white {
+    color: #0f172a !important;
+}
+
+.light-theme .border-white\/5 {
+    border-color: #e2e8f0 !important;
+}
+
+.light-theme .border-b {
+    border-color: #cbd5e1 !important;
+}
+
+.light-theme .h-\[1px\].bg-white\/5 {
+    background-color: #e2e8f0 !important;
+}
+
+.light-theme .card-orb-amber {
+    background: radial-gradient(circle, rgba(255, 159, 28, 0.06) 0%, transparent 70%) !important;
+}
+
+.light-theme .glass-pill-amber {
+    border: 1px solid rgba(255, 159, 28, 0.4) !important;
+    background: rgba(255, 159, 28, 0.05) !important;
+    color: #d97706 !important;
+}
+
+/* Premium Liquid Glass Player inside Light Theme */
+.light-theme .liquid-glass-wrapper {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 
+        0 15px 30px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.03) !important;
+}
+
+.light-theme .liquid-glass-wrapper:hover {
+    border-color: rgba(255, 159, 28, 0.4) !important;
+    box-shadow: 
+        0 25px 50px rgba(255, 159, 28, 0.05),
+        0 15px 30px rgba(0, 0, 0, 0.03) !important;
+}
+
+.light-theme .liquid-glass-refraction {
+    background: linear-gradient(
+        125deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.25) 40%,
+        rgba(255, 159, 28, 0.06) 50%,
+        rgba(255, 255, 255, 0.25) 60%,
+        rgba(255, 255, 255, 0) 100%
+    ) !important;
+}
+
+.light-theme input[type="range"].amber-slider::-webkit-slider-runnable-track {
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+
+.light-theme input[type="range"].amber-slider::-webkit-slider-thumb {
+    background-color: #d97706 !important;
+    box-shadow: 0 0 6px rgba(217, 119, 6, 0.3) !important;
+}
+
+.light-theme .border-t {
+    border-color: #e2e8f0 !important;
+}
+
