@@ -33,6 +33,7 @@ import SecurityPlus from "./components/Security+";
 import AnimatedSubsLabs from "./components/animatedsubslabs";
 import { TiltCard, HapticAppleButton, triggerHaptic } from "./components/ThreeDHaptic";
 import AdminControlPanel from "./components/AdminControlPanel";
+import PremiumPayment from "./components/PremiumPayment";
 import { supabase } from "./lib/supabase";
 
 // Types
@@ -1486,6 +1487,7 @@ export default function App() {
               </div>
 
               <div className="flex items-center gap-3">
+                <PremiumPayment isDarkTheme={isDarkTheme} />
                 {isAdmin && (
                   <button 
                     onClick={() => setPhase("admin")}

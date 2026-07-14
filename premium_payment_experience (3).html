@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Payment Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #10b981;
+        }
+
+        @keyframes borderMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes rotateLogo { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .premium-btn {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .premium-btn::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #10b981, #06b6d4, #10b981);
+            background-size: 300%;
+            animation: borderMove 4s linear infinite;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .premium-btn:hover::before { opacity: 1; }
+
+        .rotate-logo { animation: rotateLogo 0.8s ease-in-out; }
+
+        .card-glass {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 flex items-center justify-center min-h-screen p-4">
+
+    <div class="relative">
+        <button id="payButton" 
+            class="premium-btn w-16 h-14 flex items-center justify-center overflow-hidden text-white font-bold rounded-2xl cursor-pointer outline-none">
+            <div id="btnContent" class="flex items-center gap-3 whitespace-nowrap">
+                <svg id="icon" class="w-6 h-6 shrink-0 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span id="label" class="opacity-0 w-0 transition-all duration-300">Buy Lesson</span>
+            </div>
+        </button>
+    </div>
+
+    <div id="checkoutModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
+        <div class="card-glass w-full max-w-sm rounded-3xl p-8 text-white shadow-2xl relative">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">Lesson Access</h2>
+                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-white transition-colors text-xl">✕</button>
+            </div>
+            
+            <div class="space-y-4 mb-6 text-sm">
+                <div class="flex justify-between border-b border-white/5 pb-2">
+                    <span class="text-slate-400">Package</span>
+                    <span class="text-white font-medium">4 Lessons</span>
+                </div>
+                <div class="flex justify-between border-b border-white/5 pb-2">
+                    <span class="text-slate-400">Price</span>
+                    <span class="text-emerald-400 font-bold">1000 LKR</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5 mb-6">
+                <p class="font-bold text-slate-300 text-xs mb-1">Bank Details</p>
+                <p class="font-mono text-emerald-400 text-sm">Pan Asia Bank</p>
+                <p class="font-mono text-emerald-400 text-sm">I.S.B.Rathninda</p>
+                <div class="flex items-center justify-between mt-1">
+                    <p id="accNumber" class="font-mono text-emerald-400 text-sm">4424 4200 0491 7795</p>
+                    <button onclick="copyAccount()" id="copyBtn" class="text-slate-500 hover:text-white transition-colors p-1 bg-white/5 rounded-lg">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    </button>
+                </div>
+                <p class="text-slate-500 text-xs mt-2">Kandy City Center Branch</p>
+            </div>
+
+            <p class="text-slate-400 text-xs leading-relaxed mb-6 italic">
+                Send the 1000 LKR to the bank account and send a receipt to the WhatsApp number. These details are required for the lesson box videos.
+            </p>
+            
+            <a href="https://wa.me/94713116877" target="_blank" class="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition-all transform hover:scale-[1.02]">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.591 5.52 0 10.02-4.5 10.02-10.02 0-5.52-4.5-10.02-10.02-10.02-5.52 0-10.02 4.5-10.02 10.02 0 1.956.566 3.815 1.548 5.466l-.75 2.744 2.805-.725z"/></svg>
+                Send Receipt via WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('payButton');
+        const label = document.getElementById('label');
+        const icon = document.getElementById('icon');
+        const modal = document.getElementById('checkoutModal');
+
+        btn.addEventListener('mouseenter', () => {
+            btn.style.width = '190px';
+            label.classList.remove('opacity-0', 'w-0');
+            label.classList.add('opacity-100', 'w-[75px]');
+            icon.classList.add('rotate-logo');
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            btn.style.width = '64px';
+            label.classList.remove('opacity-100', 'w-[75px]');
+            label.classList.add('opacity-0', 'w-0');
+            icon.classList.remove('rotate-logo');
+        });
+
+        btn.addEventListener('click', () => toggleModal(true));
+
+        function toggleModal(show) {
+            modal.classList.toggle('hidden', !show);
+        }
+
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) toggleModal(false);
+        });
+
+        function copyAccount() {
+            const text = document.getElementById('accNumber').innerText.replace(/\s/g, '');
+            const btn = document.getElementById('copyBtn');
+            
+            // Fallback for restricted clipboard access
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    const originalContent = btn.innerHTML;
+                    btn.innerHTML = '<span class="text-[10px] font-bold">Copied!</span>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                    }, 2000);
+                }
+            } catch (err) {
+                console.error('Fallback: Unable to copy', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>
