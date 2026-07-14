@@ -22,6 +22,32 @@ body, html {
     -webkit-user-select: none;
 }
 
+/* --- Hide native video captions, subtitles, and browser overlay controls --- */
+video::-webkit-media-text-track-container,
+video::-webkit-media-text-track-display,
+video::-webkit-media-text-track-region,
+video::cue {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+video::-webkit-media-controls-closed-captions-container,
+video::-webkit-media-controls-closed-captions-track-list {
+    display: none !important;
+}
+
+video::-webkit-media-controls {
+    display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+video::-webkit-media-controls-panel {
+    display: none !important;
+}
+
 /* --- Typography --- */
 .font-serif {
     font-family: 'Playfair Display', Georgia, serif;

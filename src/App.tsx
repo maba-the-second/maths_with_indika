@@ -140,7 +140,8 @@ export default function App() {
   );
 
   // Phase 3 (Dashboard) States
-  const [activeVideoUrl, setActiveVideoUrl] = useState<string>("https://stream.vidhosting.in/videos/b128d277.mp4");
+  const DEFAULT_VIDEO_URL = "https://stream.vidhosting.in/videos/b128d277.mp4";
+  const [activeVideoUrl, setActiveVideoUrl] = useState<string>(DEFAULT_VIDEO_URL);
   const [videoPlaying, setVideoPlaying] = useState<boolean>(false);
   const [videoCurrentTime, setVideoCurrentTime] = useState<number>(0);
   const [videoDuration, setVideoDuration] = useState<number>(0);
@@ -155,6 +156,8 @@ export default function App() {
   const animationContainerRef = useRef<HTMLDivElement | null>(null);
   const uiOverlayRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const desktopVideoRef = useRef<HTMLVideoElement | null>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement | null>(null);
   const videoWrapperRef = useRef<HTMLDivElement | null>(null);
 
   // ---------------------------------------------------------------------------
@@ -192,6 +195,27 @@ export default function App() {
       loadCourses();
     }
   }, [phase, currentUser]);
+
+  // Sync videoRef to the correct video element based on screen size
+  useEffect(() => {
+    const syncVideoRef = () => {
+      const isMobile = window.innerWidth < 1024; // lg breakpoint
+      videoRef.current = isMobile ? mobileVideoRef.current : desktopVideoRef.current;
+    };
+    syncVideoRef();
+    window.addEventListener('resize', syncVideoRef);
+    return () => window.removeEventListener('resize', syncVideoRef);
+  }, [phase]);
+
+  // Force the video element to reload when the active video URL changes
+  useEffect(() => {
+    // Reload both video elements so they pick up the new src
+    if (desktopVideoRef.current) desktopVideoRef.current.load();
+    if (mobileVideoRef.current) mobileVideoRef.current.load();
+    setVideoPlaying(false);
+    setVideoCurrentTime(0);
+    setVideoDuration(0);
+  }, [activeVideoUrl]);
 
   // ---------------------------------------------------------------------------
   // Custom Elegant Toast Helper
@@ -1522,7 +1546,9 @@ export default function App() {
                     onMouseLeave={() => setHoveredVideo(null)}
                     onClick={() => {
                       if (!isLocked) {
-                        if (vid.video_id) setActiveVideoUrl(vid.video_id);
+                        setActiveVideoUrl(vid.video_id && vid.video_id.trim() !== '' ? vid.video_id.trim() : DEFAULT_VIDEO_URL);
+                        setVideoPlaying(false);
+                        setVideoCurrentTime(0);
                         setPhase("dashboard");
                         triggerToast(`Launching ${vid.title} Environment`);
                       } else {
@@ -1775,13 +1801,17 @@ export default function App() {
                   {/* Actual Video Frame */}
                   <div className="relative rounded-xl overflow-hidden bg-black/95 aspect-video z-0" id="video-container">
                     <video 
-                      ref={videoRef}
+                      ref={desktopVideoRef}
                       id="main-video" 
                       onClick={togglePlay}
                       className="w-full h-full object-cover rounded-xl cursor-pointer" 
                       playsInline 
                       preload="auto"
                       src={activeVideoUrl}
+                      disablePictureInPicture
+                      disableRemotePlayback
+                      controlsList="nodownload noplaybackrate nofullscreen"
+                      crossOrigin="anonymous"
                     >
                     </video>
 
@@ -2005,6 +2035,34 @@ export default function App() {
             </main>
 
             {/* Mobile optimized custom viewport layout */}
+            
+            {/* Mobile Video Player - visible only on small screens */}
+            <div className="block lg:hidden w-full rounded-2xl overflow-hidden border border-white/10 bg-black/95 relative"
+              onContextMenu={(e) => {
+                e.preventDefault();
+                triggerToast("Right-Click Restrained on Video Feed");
+              }}
+            >
+              {/* Mobile watermark */}
+              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 pointer-events-none z-20 opacity-10 select-none text-[7px] text-white tracking-[0.2em] font-mono uppercase items-center justify-items-center">
+                <div>INDIKA RATHINDA</div> <div>PROTECTED</div>
+                <div>DO NOT CAPTURE</div> <div>REVISION SECURE</div>
+              </div>
+              <video 
+                ref={mobileVideoRef}
+                className="w-full aspect-video object-cover" 
+                playsInline 
+                preload="auto"
+                src={activeVideoUrl}
+                disablePictureInPicture
+                disableRemotePlayback
+                controlsList="nodownload noplaybackrate nofullscreen"
+                crossOrigin="anonymous"
+                onClick={togglePlay}
+              >
+              </video>
+            </div>
+
             <PhoneCodeThrouver 
               onBackToLobby={() => {
                 playRetroSound("pop");
@@ -2028,14 +2086,6 @@ export default function App() {
               onToggleMute={toggleMute}
               onPaperRedirect={handlePaperRedirect}
               playAudio={playRetroSound}
-              onLabClick={() => {
-                playRetroSound("pop");
-                if (videoPlaying) {
-                  videoRef.current?.pause();
-                  setVideoPlaying(false);
-                }
-                setPhase("lab");
-              }}
             />
 
             {/* Lower Area: Model Question Syllabus Blocks */}

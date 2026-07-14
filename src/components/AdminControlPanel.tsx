@@ -65,7 +65,7 @@ export default function AdminControlPanel({ onViewStudentSite }: { onViewStudent
       sub: formData.sub,
       duration: formData.duration,
       description: formData.description,
-      video_id: formData.video_id,
+      video_id: formData.video_id.trim() || null,
       topics: topicsArray
     };
 
