@@ -151,6 +151,8 @@ export default function App() {
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
   const [secureBlackout, setSecureBlackout] = useState<boolean>(false);
   const [firstPlayHappened, setFirstPlayHappened] = useState<boolean>(false);
+  const [controlsVisible, setControlsVisible] = useState<boolean>(true);
+  const controlsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Audio Context & Helper Refs
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -385,7 +387,7 @@ export default function App() {
 
   // Image fallback helper
   const handleTeacherImageFallback = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = "https://placehold.co/800x1000/F8F5F1/0F0F11?text=Indika+Rathinda";
+    e.currentTarget.src = "https://placehold.co/800x1000/F8F5F1/0F0F11?text=Indika+Rathninda";
   };
 
   // ---------------------------------------------------------------------------
@@ -932,6 +934,11 @@ export default function App() {
 
     const triggerScreenshotBlock = () => {
       if (firstPlayHappened && !secureBlackout) {
+        // Synchronously hide the video immediately before React state updates
+        // This is crucial to beat the Windows Snipping Tool screen freeze
+        const videoContainer = document.getElementById("video-container");
+        if (videoContainer) videoContainer.style.visibility = "hidden";
+        
         setSecureBlackout(true);
         videoRef.current?.pause();
         setVideoPlaying(false);
@@ -952,22 +959,36 @@ export default function App() {
     const handleHardwarePrintScreen = (e: KeyboardEvent) => {
       if (e.key === "PrintScreen" || e.keyCode === 44) {
         // Clear clipboard
-        document.execCommand("copy");
+        try {
+            navigator.clipboard.writeText("");
+        } catch (err) {}
         triggerScreenshotBlock();
       }
     };
 
     const handleKeyDownSecurityBlock = (e: KeyboardEvent) => {
+      // Windows Snipping Tool (Win + Shift + S)
+      if (e.metaKey && e.shiftKey && (e.key === "s" || e.key === "S")) {
+        e.preventDefault();
+        triggerScreenshotBlock();
+      }
+      
+      // Mac Screenshots (Cmd + Shift + 3, 4, 5)
+      if (e.metaKey && e.shiftKey && ["3", "4", "5"].includes(e.key)) {
+        e.preventDefault();
+        triggerScreenshotBlock();
+      }
+
       // Limit printing, console inspect window overlays, and saving
-      if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+      if ((e.ctrlKey || e.metaKey) && (e.key === "p" || e.key === "P")) {
         e.preventDefault();
         triggerScreenshotBlock();
       }
-      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+      if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S")) {
         e.preventDefault();
         triggerScreenshotBlock();
       }
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "I") {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "i" || e.key === "I")) {
         e.preventDefault();
         triggerScreenshotBlock();
       }
@@ -989,6 +1010,10 @@ export default function App() {
   // Dashboard Video Controller Methods
   const togglePlay = () => {
     if (secureBlackout) {
+      // Restore video visibility
+      const videoContainer = document.getElementById("video-container");
+      if (videoContainer) videoContainer.style.visibility = "visible";
+      
       setSecureBlackout(false);
       triggerToast("System Decrypted & Unlocked");
       return;
@@ -1092,11 +1117,31 @@ export default function App() {
         wrapper.requestFullscreen().catch((err) => {
           console.error("Fullscreen blocked: " + err.message);
         });
+        // Start auto-hide timer when entering fullscreen
+        resetControlsTimer();
       } else {
         document.exitFullscreen();
+        setControlsVisible(true);
+        if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
       }
     } catch (e) {
       triggerToast("Fullscreen requires user event permissions.");
+    }
+  };
+
+  const resetControlsTimer = () => {
+    setControlsVisible(true);
+    if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
+    controlsTimerRef.current = setTimeout(() => {
+      if (document.fullscreenElement) {
+        setControlsVisible(false);
+      }
+    }, 15000);
+  };
+
+  const handleVideoAreaMouseMove = () => {
+    if (document.fullscreenElement) {
+      resetControlsTimer();
     }
   };
 
@@ -1194,7 +1239,7 @@ export default function App() {
                 ))}
               </h2>
               <h1 id="title-line-2" className="classy-serif-text text-3xl sm:text-6xl md:text-8xl lg:text-9xl font-semibold tracking-tighter text-[#1a1a1a] leading-none mb-1 flex flex-wrap justify-center gap-x-3">
-                {"INDIKA RATHINDA".split(" ").map((word, wIdx) => (
+                {"INDIKA RATHNINDA".split(" ").map((word, wIdx) => (
                   <span key={wIdx} className="inline-block whitespace-nowrap">
                     {word.split("").map((char, i) => (
                       <span
@@ -1218,7 +1263,7 @@ export default function App() {
               <img
                 id="teacher-cutout"
                 src="https://raw.githubusercontent.com/dulajbandara28-sketch/Rajans-Media-unit/main/bg%20remvoed.png"
-                alt="Indika Rathinda Portrait"
+                alt="Indika Rathninda Portrait"
                 className="h-full w-auto object-contain select-none transform translate-y-3 scale-110 opacity-100 z-10 transition-all duration-300 pointer-events-none"
                 onError={handleTeacherImageFallback}
               />
@@ -1269,7 +1314,7 @@ export default function App() {
                   className="comic-header-badge px-4 py-2 text-lg md:text-xl tracking-wider uppercase select-none"
                   style={{ fontFamily: "'Luckiest Guy', cursive" }}
                 >
-                  Indika.Rathinda
+                  Indika.Rathninda
                 </div>
               </div>
             </div>
@@ -1286,7 +1331,7 @@ export default function App() {
                 {isSignUp ? "Join the Portal" : "Welcome Hero"}
               </h1>
               <p className="text-xs text-gray-700 mb-6 font-semibold uppercase tracking-wider">
-                {isSignUp ? "Sign up to access Maths with Indika" : "Log in to sync with the Maths.IndikaRathinda"}
+                {isSignUp ? "Sign up to access Maths with Indika" : "Log in to sync with the Maths.IndikaRathninda"}
               </p>
 
               {/* Secure dynamic interactive status alert box */}
@@ -1315,7 +1360,7 @@ export default function App() {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       onInput={handleLoginInputReaction}
-                      placeholder="Indika Rathinda"
+                      placeholder="Indika Rathninda"
                       className="comic-input-bold w-full"
                     />
                   </div>
@@ -1349,7 +1394,7 @@ export default function App() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onInput={handleLoginInputReaction}
-                    placeholder="indika@rathinda.com"
+                    placeholder="indika@rathninda.com"
                     className="comic-input-bold w-full"
                   />
                 </div>
@@ -1501,10 +1546,7 @@ export default function App() {
                   onToggle={() => setIsDarkTheme(!isDarkTheme)} 
                   playAudio={playRetroSound}
                 />
-                <div className="border border-orange-500/30 bg-orange-500/10 text-orange-400 px-4 py-2 text-[10px] uppercase tracking-[0.25em] font-bold flex items-center gap-2 rounded-xl backdrop-blur-md">
-                  <ShieldCheck className="h-3.5 w-3.5 text-orange-400" />
-                  Active Revision Library V2
-                </div>
+
               </div>
             </header>
 
@@ -1757,6 +1799,7 @@ export default function App() {
                   ref={videoWrapperRef}
                   id="video-frame-wrapper" 
                   className="liquid-glass-wrapper p-3 relative group shadow-xl overflow-hidden rounded-2xl border border-white/5 bg-slate-900/30"
+                  onMouseMove={handleVideoAreaMouseMove}
                   onContextMenu={(e) => {
                     e.preventDefault();
                     triggerToast("Right-Click Restrained on Video Feed");
@@ -1770,7 +1813,7 @@ export default function App() {
                     id="secure-watermark" 
                     className="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none z-20 opacity-10 select-none text-[8px] text-white tracking-[0.2em] font-mono uppercase items-center justify-items-center"
                   >
-                    <div>INDIKA RATHINDA</div> <div>IP: PROTECTED</div> <div>2027 REVISION</div>
+                    <div>INDIKA RATHNINDA</div> <div>IP: PROTECTED</div> <div>2027 REVISION</div>
                     <div>DO NOT CAPTURE</div> <div className="text-orange-400 font-bold scale-105">REVISION SECURE</div> <div>MATHS SANDBOX</div>
                     <div>CONFIDENTIAL</div> <div>COMBINED MATHS</div> <div>G.C.E. A/L</div>
                   </div>
@@ -1823,8 +1866,12 @@ export default function App() {
                     {/* Editorial media controls bar */}
                     <div 
                       id="media-controls-deck" 
-                      className={`absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-xl border border-white/10 p-4 rounded-xl flex flex-col gap-3 z-30 transition-all duration-300 ease-out ${
-                        !videoPlaying ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 focus-within:opacity-100 focus-within:translate-y-0"
+                      className={`absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-xl border border-white/10 p-4 rounded-xl flex flex-col gap-3 z-30 transition-all duration-500 ease-out ${
+                        !videoPlaying 
+                          ? "opacity-100 translate-y-0" 
+                          : !controlsVisible 
+                            ? "opacity-0 translate-y-3 pointer-events-none" 
+                            : "opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 focus-within:opacity-100 focus-within:translate-y-0"
                       }`}
                     >
                       {/* Timeline progression bar */}
@@ -1947,20 +1994,7 @@ export default function App() {
                             </svg>
                           </button>
 
-                          <button 
-                            onClick={() => {
-                              playRetroSound("pop");
-                              if (videoPlaying) {
-                                videoRef.current?.pause();
-                                setVideoPlaying(false);
-                              }
-                              setPhase("lab");
-                            }} 
-                            className="p-2 text-orange-450 hover:text-orange-300 hover:bg-orange-500/10 transition-colors cursor-pointer rounded flex items-center justify-center" 
-                            title="Interactive Subtitles Lab"
-                          >
-                            <Beaker className="h-4.5 w-4.5 active:scale-95 transition-all" />
-                          </button>
+
                         </div>
                       </div>
 
@@ -2047,7 +2081,7 @@ export default function App() {
             >
               {/* Mobile watermark */}
               <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 pointer-events-none z-20 opacity-10 select-none text-[7px] text-white tracking-[0.2em] font-mono uppercase items-center justify-items-center">
-                <div>INDIKA RATHINDA</div> <div>PROTECTED</div>
+                <div>INDIKA RATHNINDA</div> <div>PROTECTED</div>
                 <div>DO NOT CAPTURE</div> <div>REVISION SECURE</div>
               </div>
               <video 

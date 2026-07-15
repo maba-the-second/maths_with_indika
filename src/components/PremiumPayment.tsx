@@ -6,7 +6,6 @@ interface PremiumPaymentProps {
 
 export default function PremiumPayment({ isDarkTheme = true }: PremiumPaymentProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const copyAccount = () => {
@@ -30,45 +29,33 @@ export default function PremiumPayment({ isDarkTheme = true }: PremiumPaymentPro
 
   return (
     <>
-      {/* Animated Pay Button */}
+      {/* Pay Button */}
       <button
         onClick={() => setIsOpen(true)}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className="relative flex items-center justify-center overflow-hidden text-white font-bold rounded-2xl cursor-pointer outline-none transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+        className="relative flex items-center justify-center gap-2.5 text-white font-bold rounded-2xl cursor-pointer outline-none px-5 py-2.5 transition-all duration-300 hover:scale-105 active:scale-95"
         style={{
-          width: isHovered ? "190px" : "56px",
-          height: "48px",
           background: "rgba(15, 23, 42, 0.8)",
           backdropFilter: "blur(12px)",
           border: "1px solid rgba(16, 185, 129, 0.3)",
-          boxShadow: isHovered
-            ? "0 0 25px rgba(16, 185, 129, 0.25), 0 8px 30px rgba(0, 0, 0, 0.35)"
-            : "0 8px 30px rgba(0, 0, 0, 0.35)",
+          boxShadow: "0 8px 30px rgba(0, 0, 0, 0.35)",
         }}
       >
-        <div className="flex items-center gap-3 whitespace-nowrap">
-          <svg
-            className={`w-5 h-5 shrink-0 transition-transform duration-500 ${isHovered ? "rotate-[360deg]" : ""}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span
-            className={`transition-all duration-300 text-sm font-extrabold uppercase tracking-wider ${
-              isHovered ? "opacity-100 w-auto" : "opacity-0 w-0"
-            }`}
-          >
-            Pay Fee
-          </span>
-        </div>
+        <svg
+          className="w-5 h-5 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span className="text-[10px] font-extrabold uppercase tracking-[0.2em]">
+          Pay Fee
+        </span>
       </button>
 
       {/* Checkout Modal Overlay */}
